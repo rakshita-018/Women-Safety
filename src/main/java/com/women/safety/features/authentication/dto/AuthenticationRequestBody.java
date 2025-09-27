@@ -8,7 +8,6 @@ public class AuthenticationRequestBody {
     private String password;
     private String firstname;
     private String lastname;
-    private String role;
 
     public AuthenticationRequestBody(String email, String password) {
         this.email = email;

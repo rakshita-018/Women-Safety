@@ -6,6 +6,7 @@ import com.women.safety.features.authentication.model.AuthUser;
 import com.women.safety.features.authentication.repository.AuthUserRepository;
 import com.women.safety.features.authentication.utils.EmailService;
 import com.women.safety.features.authentication.utils.JwtService;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +40,7 @@ public class AuthService {
     public static String generateEmailVerificationToken() {
         SecureRandom random = new SecureRandom();
         StringBuilder token = new StringBuilder(5);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             token.append(random.nextInt(10));
         }
         return token.toString();
@@ -70,6 +71,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public void validateEmailVerificationToken(String token, String email){
         Optional<AuthUser> user = authUserRepository.findByEmail(email);
         if(user.isPresent() && passwordEncoder.matches(token, user.get().getEmailVerificationToken()) &&
@@ -86,6 +88,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public AuthenticationResponseBody register(AuthenticationRequestBody registerRequestBody){
 
         AuthUser user = authUserRepository.save(new AuthUser(
@@ -112,7 +115,7 @@ public class AuthService {
         return new AuthenticationResponseBody(authToken, "User registered successfully.");
     }
 
-
+    @Transactional
     public AuthenticationResponseBody login(AuthenticationRequestBody loginRequestBody){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -154,6 +157,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public void resetPassword(String email, String newPassword, String token) {
         Optional<AuthUser> user = authUserRepository.findByEmail(email);
         if (user.isPresent() && passwordEncoder.matches(token, user.get().getPasswordResetToken())

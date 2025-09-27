@@ -46,20 +46,20 @@ public class AuthUserController {
         return "Email verification token sent successfully.";
     }
 
-    @PutMapping("/validate-email-verification-token")
-    public String verifyEmail(@RequestParam String token, @AuthenticationPrincipal CustomUserDetails user) {
-        authService.validateEmailVerificationToken(token, user.getUsername());
-        return "Email verified successfully.";
-    }
-
 //    @PutMapping("/validate-email-verification-token")
-//    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String token, AuthUser user){
-//        authService.validateEmailVerificationToken(token, user.getEmail());
-//
-//        Map<String, String> response = new HashMap<>();
-//        response.put("Message", "Email Verified successfully");
-//        return ResponseEntity.ok(response);
+//    public String verifyEmail(@RequestParam String token, @AuthenticationPrincipal CustomUserDetails user) {
+//        authService.validateEmailVerificationToken(token, user.getUsername());
+//        return "Email verified successfully.";
 //    }
+
+    @PutMapping("/validate-email-verification-token")
+    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String token, @AuthenticationPrincipal CustomUserDetails user){
+        authService.validateEmailVerificationToken(token, user.getEmail());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("Message", "Email Verified successfully");
+        return ResponseEntity.ok(response);
+    }
 
     @PutMapping("/send-password-reset-token")
     public String sendPasswordResetToken(@RequestParam String email) {

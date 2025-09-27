@@ -31,8 +31,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/auth/**", "/public/**").permitAll()
+                        .requestMatchers("api/auth/**").permitAll()
                         .requestMatchers("/adminOnly/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/api/emergency/**").authenticated()
                         .anyRequest().authenticated()
                 )
 //                .userDetailsService(customUserDetailService)
