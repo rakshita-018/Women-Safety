@@ -24,23 +24,23 @@ public class AuthUserController {
     }
 
     @PostMapping("/login")
-    public AuthenticationResponseBody loginPage(@Valid @RequestBody AuthenticationRequestBody loginRequestBody){
+    public AuthenticationResponseBody loginPage(@Valid @RequestBody AuthenticationRequestBody loginRequestBody) {
         return authService.login(loginRequestBody);
     }
 
     @PostMapping("/register")
-    public AuthenticationResponseBody registerPage(@Valid @RequestBody AuthenticationRequestBody registerRequestBody){
+    public AuthenticationResponseBody registerPage(@Valid @RequestBody AuthenticationRequestBody registerRequestBody) {
         return authService.register(registerRequestBody);
     }
 
     @GetMapping("/user")
-    public AuthUser getUser(@RequestBody AuthUser user){
+    public AuthUser getUser(@RequestBody AuthUser user) {
         return user;
     }
 
-   // Email
+    // Email
     @GetMapping("/send-email-verification-token")
-    public String sendEmailVerificationToken(@AuthenticationPrincipal CustomUserDetails user){
+    public String sendEmailVerificationToken(@AuthenticationPrincipal CustomUserDetails user) {
         authService.sendEmailVerificationToken(user.getUsername());
         System.out.println("Email verification token is sent to service");
         return "Email verification token sent successfully.";
@@ -53,7 +53,7 @@ public class AuthUserController {
 //    }
 
     @PutMapping("/validate-email-verification-token")
-    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String token, @AuthenticationPrincipal CustomUserDetails user){
+    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String token, @AuthenticationPrincipal CustomUserDetails user) {
         authService.validateEmailVerificationToken(token, user.getEmail());
 
         Map<String, String> response = new HashMap<>();
@@ -74,5 +74,30 @@ public class AuthUserController {
         return "Password reset successfully.";
     }
 
+    //Profile Management
 
+    @GetMapping("/profile")
+    public ResponseEntity<AuthUser> getUserProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        AuthUser user = authService.getUserProfile(userDetails.getUsername());
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<Map<String, Object>> updateUserProfile(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String phoneNumber,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        AuthUser updatedUser = authService.updateUserProfile(
+                userDetails.getUsername(), firstName, lastName, phoneNumber);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Profile updated successfully",
+                "user", updatedUser
+        ));
+
+    }
 }

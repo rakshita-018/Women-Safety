@@ -80,4 +80,59 @@ public class AuthUser {
         this.emergencyAlerts = new ArrayList<>();
     }
 
+    // Utility methods for emergency contacts
+    public void addEmergencyContact(EmergencyContact contact) {
+        emergencyContacts.add(contact);
+        contact.setUser(this);
+    }
+
+    public void removeEmergencyContact(EmergencyContact contact) {
+        emergencyContacts.remove(contact);
+        contact.setUser(null);
+    }
+
+    // Utility methods for emergency alerts
+    public void addEmergencyAlert(EmergencyAlert alert) {
+        emergencyAlerts.add(alert);
+        alert.setUser(this);
+    }
+
+    // Helper method to get full name
+    public String getFullName() {
+        if (firstName != null && lastName != null) {
+            return firstName + " " + lastName;
+        } else if (firstName != null) {
+            return firstName;
+        } else if (lastName != null) {
+            return lastName;
+        } else {
+            return email; // Fallback to email if no name is provided
+        }
+    }
+
+    // Helper method to check if user has emergency contacts
+    public boolean hasEmergencyContacts() {
+        return emergencyContacts != null && !emergencyContacts.isEmpty();
+    }
+
+    // Helper method to get primary emergency contact
+    public EmergencyContact getPrimaryEmergencyContact() {
+        if (emergencyContacts != null) {
+            return emergencyContacts.stream()
+                    .filter(contact -> Boolean.TRUE.equals(contact.getIsPrimary()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    // Helper method to get active emergency alerts count
+    public long getActiveEmergencyAlertsCount() {
+        if (emergencyAlerts != null) {
+            return emergencyAlerts.stream()
+                    .filter(alert -> alert.getAlertStatus() == EmergencyAlert.AlertStatus.ACTIVE)
+                    .count();
+        }
+        return 0;
+    }
 }

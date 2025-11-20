@@ -174,6 +174,33 @@ public class AuthService {
         }
     }
 
+    // Get user profile
+    public AuthUser getUserProfile(String email) {
+        return authUserRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    // Update user profile
+    @Transactional
+    public AuthUser updateUserProfile(String email, String firstName, String lastName, String phoneNumber) {
+        AuthUser user = authUserRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (firstName != null) {
+            user.setFirstName(firstName.trim().isEmpty() ? null : firstName.trim());
+        }
+
+        if (lastName != null) {
+            user.setLastName(lastName.trim().isEmpty() ? null : lastName.trim());
+        }
+
+        if (phoneNumber != null) {
+            user.setPhoneNumber(phoneNumber.trim().isEmpty() ? null : phoneNumber.trim());
+        }
+
+        return authUserRepository.save(user);
+    }
+
 
 
 }

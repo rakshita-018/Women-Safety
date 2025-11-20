@@ -1,0 +1,87 @@
+package com.women.safety.features.smartAlert.model;
+
+import com.women.safety.features.authentication.model.AuthUser;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "suspicious_activity_log", indexes = {
+        @Index(name = "idx_user_timestamp", columnList = "user_id, timestamp"),
+        @Index(name = "idx_activity_type", columnList = "activity_type")
+})
+@Data
+public class SuspiciousActivityLog {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AuthUser user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_type", nullable = false)
+    private ActivityType activityType;
+
+    @Column(name = "intensity_level")
+    private Double intensityLevel; // 0.0 to 1.0
+
+    @Column(name = "confidence_score")
+    private Double confidenceScore; // 0.0 to 1.0
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "device_motion_data", columnDefinition = "TEXT")
+    private String deviceMotionData; // JSON data from accelerometer
+
+    @Column(name = "timestamp", nullable = false)
+    private LocalDateTime timestamp;
+
+    @Column(name = "alert_triggered")
+    private Boolean alertTriggered = false;
+
+    @Column(name = "false_positive")
+    private Boolean falsePositive = false; // User can mark as false alarm
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    public enum ActivityType {
+        PHONE_SHAKE,        // Vigorous shaking detected
+        RAPID_MOVEMENT,     // Running detected
+        FALL_DETECTED,      // Possible fall
+        ERRATIC_MOVEMENT,   // Unusual movement patterns
+        SUDDEN_STOP,        // Sudden stop after movement
+        VOICE_DISTRESS,     // "Help" keyword detected
+        SCREAM_DETECTED,    // High-pitched sound detected
+        IMPACT_DETECTED,    // Strong impact/hit detected
+        UNUSUAL_LOCATION,   // In dangerous area at unusual time
+        DEVICE_THROWN       // Device thrown/dropped
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (timestamp == null) {
+            timestamp = LocalDateTime.now();
+        }
+    }
+
+    public SuspiciousActivityLog() {}
+
+    public SuspiciousActivityLog(AuthUser user, ActivityType activityType, Double intensityLevel) {
+        this.user = user;
+        this.activityType = activityType;
+        this.intensityLevel = intensityLevel;
+        this.timestamp = LocalDateTime.now();
+    }
+}
