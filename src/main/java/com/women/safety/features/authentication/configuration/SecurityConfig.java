@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/emergency/**").authenticated()
                         .requestMatchers("/api/location/**").authenticated()
                         .requestMatchers("/api/smart-alert/**").authenticated()
+                        .requestMatchers("/api/fake-call/**").authenticated()
                         .requestMatchers("/protected/**").authenticated()
                         .anyRequest().authenticated()
                 )
