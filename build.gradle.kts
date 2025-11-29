@@ -51,10 +51,13 @@ dependencies {
 	//Twilio for sms
 	implementation("com.twilio.sdk:twilio:9.13.0")
 
+	//java mail
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
 
 }
 
