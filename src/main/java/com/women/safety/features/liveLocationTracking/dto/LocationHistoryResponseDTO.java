@@ -68,5 +68,133 @@ public class LocationHistoryResponseDTO {
             this.batteryLevel = tracking.getBatteryLevel();
             this.isCharging = tracking.getIsCharging();
         }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(Double latitude) {
+            this.latitude = latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(Double longitude) {
+            this.longitude = longitude;
+        }
+
+        public Double getAltitude() {
+            return altitude;
+        }
+
+        public void setAltitude(Double altitude) {
+            this.altitude = altitude;
+        }
+
+        public Double getAccuracy() {
+            return accuracy;
+        }
+
+        public void setAccuracy(Double accuracy) {
+            this.accuracy = accuracy;
+        }
+
+        public Double getSpeed() {
+            return speed;
+        }
+
+        public void setSpeed(Double speed) {
+            this.speed = speed;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public LocalDateTime getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(LocalDateTime timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public Integer getBatteryLevel() {
+            return batteryLevel;
+        }
+
+        public void setBatteryLevel(Integer batteryLevel) {
+            this.batteryLevel = batteryLevel;
+        }
+
+        public Boolean getCharging() {
+            return isCharging;
+        }
+
+        public void setCharging(Boolean charging) {
+            isCharging = charging;
+        }
+    }
+
+    public List<LocationPoint> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<LocationPoint> locations) {
+        this.locations = locations;
+    }
+
+    public Double getTotalDistanceTraveled() {
+        return totalDistanceTraveled;
+    }
+
+    public void setTotalDistanceTraveled(Double totalDistanceTraveled) {
+        this.totalDistanceTraveled = totalDistanceTraveled;
+    }
+
+    public Integer getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(Integer totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

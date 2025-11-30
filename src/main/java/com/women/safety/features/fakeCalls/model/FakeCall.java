@@ -99,4 +99,132 @@ public class FakeCall {
         this.triggerCount++;
         this.lastTriggeredAt = LocalDateTime.now();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public String getCallerName() {
+        return callerName;
+    }
+
+    public void setCallerName(String callerName) {
+        this.callerName = callerName;
+    }
+
+    public String getCallerPhone() {
+        return callerPhone;
+    }
+
+    public void setCallerPhone(String callerPhone) {
+        this.callerPhone = callerPhone;
+    }
+
+    public String getCallerPhotoUrl() {
+        return callerPhotoUrl;
+    }
+
+    public void setCallerPhotoUrl(String callerPhotoUrl) {
+        this.callerPhotoUrl = callerPhotoUrl;
+    }
+
+    public String getRingtoneName() {
+        return ringtoneName;
+    }
+
+    public void setRingtoneName(String ringtoneName) {
+        this.ringtoneName = ringtoneName;
+    }
+
+    public Boolean getVibrateEnabled() {
+        return vibrateEnabled;
+    }
+
+    public void setVibrateEnabled(Boolean vibrateEnabled) {
+        this.vibrateEnabled = vibrateEnabled;
+    }
+
+    public Integer getAutoAnswerDelaySeconds() {
+        return autoAnswerDelaySeconds;
+    }
+
+    public void setAutoAnswerDelaySeconds(Integer autoAnswerDelaySeconds) {
+        this.autoAnswerDelaySeconds = autoAnswerDelaySeconds;
+    }
+
+    public Integer getCallDurationSeconds() {
+        return callDurationSeconds;
+    }
+
+    public void setCallDurationSeconds(Integer callDurationSeconds) {
+        this.callDurationSeconds = callDurationSeconds;
+    }
+
+    public CallType getCallType() {
+        return callType;
+    }
+
+    public void setCallType(CallType callType) {
+        this.callType = callType;
+    }
+
+    public String getPresetName() {
+        return presetName;
+    }
+
+    public void setPresetName(String presetName) {
+        this.presetName = presetName;
+    }
+
+    public Boolean getPreset() {
+        return isPreset;
+    }
+
+    public void setPreset(Boolean preset) {
+        isPreset = preset;
+    }
+
+    public Integer getTriggerCount() {
+        return triggerCount;
+    }
+
+    public void setTriggerCount(Integer triggerCount) {
+        this.triggerCount = triggerCount;
+    }
+
+    public LocalDateTime getLastTriggeredAt() {
+        return lastTriggeredAt;
+    }
+
+    public void setLastTriggeredAt(LocalDateTime lastTriggeredAt) {
+        this.lastTriggeredAt = lastTriggeredAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

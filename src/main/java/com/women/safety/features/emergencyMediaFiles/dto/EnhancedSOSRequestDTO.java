@@ -35,4 +35,116 @@ public class EnhancedSOSRequestDTO {
         this.photoCount = 3;
         this.videoDurationSeconds = 5;
     }
+
+    public String getAlertMessage() {
+        return alertMessage;
+    }
+
+    public void setAlertMessage(String alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public String getTriggerType() {
+        return triggerType;
+    }
+
+    public void setTriggerType(String triggerType) {
+        this.triggerType = triggerType;
+    }
+
+    public String getTriggerDetails() {
+        return triggerDetails;
+    }
+
+    public void setTriggerDetails(String triggerDetails) {
+        this.triggerDetails = triggerDetails;
+    }
+
+    public Integer getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(Integer batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+    public Boolean getCharging() {
+        return isCharging;
+    }
+
+    public void setCharging(Boolean charging) {
+        isCharging = charging;
+    }
+
+    public Boolean getCaptureAudio() {
+        return captureAudio;
+    }
+
+    public void setCaptureAudio(Boolean captureAudio) {
+        this.captureAudio = captureAudio;
+    }
+
+    public Boolean getCapturePhoto() {
+        return capturePhoto;
+    }
+
+    public void setCapturePhoto(Boolean capturePhoto) {
+        this.capturePhoto = capturePhoto;
+    }
+
+    public Boolean getCaptureVideo() {
+        return captureVideo;
+    }
+
+    public void setCaptureVideo(Boolean captureVideo) {
+        this.captureVideo = captureVideo;
+    }
+
+    public Integer getAudioDurationSeconds() {
+        return audioDurationSeconds;
+    }
+
+    public void setAudioDurationSeconds(Integer audioDurationSeconds) {
+        this.audioDurationSeconds = audioDurationSeconds;
+    }
+
+    public Integer getPhotoCount() {
+        return photoCount;
+    }
+
+    public void setPhotoCount(Integer photoCount) {
+        this.photoCount = photoCount;
+    }
+
+    public Integer getVideoDurationSeconds() {
+        return videoDurationSeconds;
+    }
+
+    public void setVideoDurationSeconds(Integer videoDurationSeconds) {
+        this.videoDurationSeconds = videoDurationSeconds;
+    }
 }

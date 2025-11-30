@@ -33,4 +33,44 @@ public class EmergencyAlertResponseDTO {
         this.contactsNotifiedCount = alert.getContactsNotifiedCount();
         this.message = message;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getAlertMessage() {
+        return alertMessage;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public EmergencyAlert.AlertStatus getAlertStatus() {
+        return alertStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getResolvedAt() {
+        return resolvedAt;
+    }
+
+    public Integer getContactsNotifiedCount() {
+        return contactsNotifiedCount;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

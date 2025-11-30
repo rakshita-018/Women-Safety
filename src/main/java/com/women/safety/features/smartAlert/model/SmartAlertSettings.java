@@ -96,4 +96,172 @@ public class SmartAlertSettings {
     public SmartAlertSettings(AuthUser user) {
         this.user = user;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public Boolean getShakeDetectionEnabled() {
+        return shakeDetectionEnabled;
+    }
+
+    public void setShakeDetectionEnabled(Boolean shakeDetectionEnabled) {
+        this.shakeDetectionEnabled = shakeDetectionEnabled;
+    }
+
+    public Double getShakeSensitivity() {
+        return shakeSensitivity;
+    }
+
+    public void setShakeSensitivity(Double shakeSensitivity) {
+        this.shakeSensitivity = shakeSensitivity;
+    }
+
+    public Integer getShakeDurationSeconds() {
+        return shakeDurationSeconds;
+    }
+
+    public void setShakeDurationSeconds(Integer shakeDurationSeconds) {
+        this.shakeDurationSeconds = shakeDurationSeconds;
+    }
+
+    public Boolean getRunningDetectionEnabled() {
+        return runningDetectionEnabled;
+    }
+
+    public void setRunningDetectionEnabled(Boolean runningDetectionEnabled) {
+        this.runningDetectionEnabled = runningDetectionEnabled;
+    }
+
+    public Boolean getFallDetectionEnabled() {
+        return fallDetectionEnabled;
+    }
+
+    public void setFallDetectionEnabled(Boolean fallDetectionEnabled) {
+        this.fallDetectionEnabled = fallDetectionEnabled;
+    }
+
+    public Integer getRunningDurationSeconds() {
+        return runningDurationSeconds;
+    }
+
+    public void setRunningDurationSeconds(Integer runningDurationSeconds) {
+        this.runningDurationSeconds = runningDurationSeconds;
+    }
+
+    public Boolean getImpactDetectionEnabled() {
+        return impactDetectionEnabled;
+    }
+
+    public void setImpactDetectionEnabled(Boolean impactDetectionEnabled) {
+        this.impactDetectionEnabled = impactDetectionEnabled;
+    }
+
+    public Boolean getVoiceActivationEnabled() {
+        return voiceActivationEnabled;
+    }
+
+    public void setVoiceActivationEnabled(Boolean voiceActivationEnabled) {
+        this.voiceActivationEnabled = voiceActivationEnabled;
+    }
+
+    public String getVoiceKeywords() {
+        return voiceKeywords;
+    }
+
+    public void setVoiceKeywords(String voiceKeywords) {
+        this.voiceKeywords = voiceKeywords;
+    }
+
+    public Boolean getScreamDetectionEnabled() {
+        return screamDetectionEnabled;
+    }
+
+    public void setScreamDetectionEnabled(Boolean screamDetectionEnabled) {
+        this.screamDetectionEnabled = screamDetectionEnabled;
+    }
+
+    public Boolean getAutoTriggerEnabled() {
+        return autoTriggerEnabled;
+    }
+
+    public void setAutoTriggerEnabled(Boolean autoTriggerEnabled) {
+        this.autoTriggerEnabled = autoTriggerEnabled;
+    }
+
+    public Integer getConfirmationDelaySeconds() {
+        return confirmationDelaySeconds;
+    }
+
+    public void setConfirmationDelaySeconds(Integer confirmationDelaySeconds) {
+        this.confirmationDelaySeconds = confirmationDelaySeconds;
+    }
+
+    public Boolean getSilentMode() {
+        return silentMode;
+    }
+
+    public void setSilentMode(Boolean silentMode) {
+        this.silentMode = silentMode;
+    }
+
+    public Boolean getAutoEnableAtNight() {
+        return autoEnableAtNight;
+    }
+
+    public void setAutoEnableAtNight(Boolean autoEnableAtNight) {
+        this.autoEnableAtNight = autoEnableAtNight;
+    }
+
+    public Integer getNightStartHour() {
+        return nightStartHour;
+    }
+
+    public void setNightStartHour(Integer nightStartHour) {
+        this.nightStartHour = nightStartHour;
+    }
+
+    public Integer getNightEndHour() {
+        return nightEndHour;
+    }
+
+    public void setNightEndHour(Integer nightEndHour) {
+        this.nightEndHour = nightEndHour;
+    }
+
+    public Boolean getAutoEnableInDangerZones() {
+        return autoEnableInDangerZones;
+    }
+
+    public void setAutoEnableInDangerZones(Boolean autoEnableInDangerZones) {
+        this.autoEnableInDangerZones = autoEnableInDangerZones;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

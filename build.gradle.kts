@@ -52,7 +52,7 @@ dependencies {
 	implementation("com.twilio.sdk:twilio:9.13.0")
 
 	//java mail
-	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation("org.springframework.boot:spring-boot-starter-mail:3.3.4")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

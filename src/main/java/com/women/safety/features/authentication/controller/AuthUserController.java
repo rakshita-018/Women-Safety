@@ -6,7 +6,6 @@ import com.women.safety.features.authentication.model.AuthUser;
 import com.women.safety.features.authentication.security.CustomUserDetails;
 import com.women.safety.features.authentication.service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

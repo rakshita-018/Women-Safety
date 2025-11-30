@@ -13,8 +13,15 @@ public class AuthenticationResponseBody {
         this.message = message;
     }
 
+    public String getToken() {
+        return token;
+    }
 
-//    private final String token;
+    public String getMessage() {
+        return message;
+    }
+
+    //    private final String token;
 //    private final String message;
 //    private final UserInfo user;
 //

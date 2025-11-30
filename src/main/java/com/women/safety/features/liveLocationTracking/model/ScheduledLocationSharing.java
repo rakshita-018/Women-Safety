@@ -157,4 +157,180 @@ public class ScheduledLocationSharing {
         this.actualArrivalTime = LocalDateTime.now();
         this.status = SharingStatus.COMPLETED;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public void setSessionName(String sessionName) {
+        this.sessionName = sessionName;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public void setDurationMinutes(Integer durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public Integer getUpdateIntervalSeconds() {
+        return updateIntervalSeconds;
+    }
+
+    public void setUpdateIntervalSeconds(Integer updateIntervalSeconds) {
+        this.updateIntervalSeconds = updateIntervalSeconds;
+    }
+
+    public SharingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SharingStatus status) {
+        this.status = status;
+    }
+
+    public Double getDestinationLatitude() {
+        return destinationLatitude;
+    }
+
+    public void setDestinationLatitude(Double destinationLatitude) {
+        this.destinationLatitude = destinationLatitude;
+    }
+
+    public Double getDestinationLongitude() {
+        return destinationLongitude;
+    }
+
+    public void setDestinationLongitude(Double destinationLongitude) {
+        this.destinationLongitude = destinationLongitude;
+    }
+
+    public String getDestinationAddress() {
+        return destinationAddress;
+    }
+
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
+    }
+
+    public LocalDateTime getExpectedArrivalTime() {
+        return expectedArrivalTime;
+    }
+
+    public void setExpectedArrivalTime(LocalDateTime expectedArrivalTime) {
+        this.expectedArrivalTime = expectedArrivalTime;
+    }
+
+    public LocalDateTime getActualArrivalTime() {
+        return actualArrivalTime;
+    }
+
+    public void setActualArrivalTime(LocalDateTime actualArrivalTime) {
+        this.actualArrivalTime = actualArrivalTime;
+    }
+
+    public Boolean getNotifyContactsOnStart() {
+        return notifyContactsOnStart;
+    }
+
+    public void setNotifyContactsOnStart(Boolean notifyContactsOnStart) {
+        this.notifyContactsOnStart = notifyContactsOnStart;
+    }
+
+    public Boolean getNotifyContactsOnArrival() {
+        return notifyContactsOnArrival;
+    }
+
+    public void setNotifyContactsOnArrival(Boolean notifyContactsOnArrival) {
+        this.notifyContactsOnArrival = notifyContactsOnArrival;
+    }
+
+    public Boolean getNotifyContactsOnDelay() {
+        return notifyContactsOnDelay;
+    }
+
+    public void setNotifyContactsOnDelay(Boolean notifyContactsOnDelay) {
+        this.notifyContactsOnDelay = notifyContactsOnDelay;
+    }
+
+    public Boolean getAutoAlertIfNotArrived() {
+        return autoAlertIfNotArrived;
+    }
+
+    public void setAutoAlertIfNotArrived(Boolean autoAlertIfNotArrived) {
+        this.autoAlertIfNotArrived = autoAlertIfNotArrived;
+    }
+
+    public LocalDateTime getLastLocationUpdate() {
+        return lastLocationUpdate;
+    }
+
+    public void setLastLocationUpdate(LocalDateTime lastLocationUpdate) {
+        this.lastLocationUpdate = lastLocationUpdate;
+    }
+
+    public Integer getTotalUpdatesSent() {
+        return totalUpdatesSent;
+    }
+
+    public void setTotalUpdatesSent(Integer totalUpdatesSent) {
+        this.totalUpdatesSent = totalUpdatesSent;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

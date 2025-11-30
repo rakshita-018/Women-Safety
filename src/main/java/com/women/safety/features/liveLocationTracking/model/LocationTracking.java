@@ -120,4 +120,132 @@ public class LocationTracking {
 
         return R * c;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public EmergencyAlert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(EmergencyAlert alert) {
+        this.alert = alert;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(Double altitude) {
+        this.altitude = altitude;
+    }
+
+    public Double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(Double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getBearing() {
+        return bearing;
+    }
+
+    public void setBearing(Double bearing) {
+        this.bearing = bearing;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Integer getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(Integer batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+    public Boolean getCharging() {
+        return isCharging;
+    }
+
+    public void setCharging(Boolean charging) {
+        isCharging = charging;
+    }
+
+    public Boolean getMockLocation() {
+        return isMockLocation;
+    }
+
+    public void setMockLocation(Boolean mockLocation) {
+        isMockLocation = mockLocation;
+    }
+
+    public TrackingType getTrackingType() {
+        return trackingType;
+    }
+
+    public void setTrackingType(TrackingType trackingType) {
+        this.trackingType = trackingType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

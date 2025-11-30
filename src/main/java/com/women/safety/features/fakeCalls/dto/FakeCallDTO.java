@@ -37,6 +37,94 @@ public class FakeCallDTO {
         private String presetName;
 
         public FakeCallPresetDTO() {}
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public @NotBlank(message = "Caller name is required") String getCallerName() {
+            return callerName;
+        }
+
+        public void setCallerName(@NotBlank(message = "Caller name is required") String callerName) {
+            this.callerName = callerName;
+        }
+
+        public @NotBlank(message = "Caller phone is required") String getCallerPhone() {
+            return callerPhone;
+        }
+
+        public void setCallerPhone(@NotBlank(message = "Caller phone is required") String callerPhone) {
+            this.callerPhone = callerPhone;
+        }
+
+        public String getCallerPhotoUrl() {
+            return callerPhotoUrl;
+        }
+
+        public void setCallerPhotoUrl(String callerPhotoUrl) {
+            this.callerPhotoUrl = callerPhotoUrl;
+        }
+
+        public String getRingtoneName() {
+            return ringtoneName;
+        }
+
+        public void setRingtoneName(String ringtoneName) {
+            this.ringtoneName = ringtoneName;
+        }
+
+        public Boolean getVibrateEnabled() {
+            return vibrateEnabled;
+        }
+
+        public void setVibrateEnabled(Boolean vibrateEnabled) {
+            this.vibrateEnabled = vibrateEnabled;
+        }
+
+        public Integer getAutoAnswerDelaySeconds() {
+            return autoAnswerDelaySeconds;
+        }
+
+        public void setAutoAnswerDelaySeconds(Integer autoAnswerDelaySeconds) {
+            this.autoAnswerDelaySeconds = autoAnswerDelaySeconds;
+        }
+
+        public @Min(value = 10, message = "Call duration must be at least 10 seconds") Integer getCallDurationSeconds() {
+            return callDurationSeconds;
+        }
+
+        public void setCallDurationSeconds(@Min(value = 10, message = "Call duration must be at least 10 seconds") Integer callDurationSeconds) {
+            this.callDurationSeconds = callDurationSeconds;
+        }
+
+        public FakeCall.CallType getCallType() {
+            return callType;
+        }
+
+        public void setCallType(FakeCall.CallType callType) {
+            this.callType = callType;
+        }
+
+        public Boolean getPreset() {
+            return isPreset;
+        }
+
+        public void setPreset(Boolean preset) {
+            isPreset = preset;
+        }
+
+        public String getPresetName() {
+            return presetName;
+        }
+
+        public void setPresetName(String presetName) {
+            this.presetName = presetName;
+        }
     }
 
     /**
@@ -65,6 +153,102 @@ public class FakeCallDTO {
             this.autoAnswerDelaySeconds = null; // Manual answer
             this.callDurationSeconds = 120; // 2 minutes
             this.triggerMethod = FakeCallLog.TriggerMethod.IN_APP_BUTTON;
+        }
+
+        public Long getPresetId() {
+            return presetId;
+        }
+
+        public void setPresetId(Long presetId) {
+            this.presetId = presetId;
+        }
+
+        public String getCallerName() {
+            return callerName;
+        }
+
+        public void setCallerName(String callerName) {
+            this.callerName = callerName;
+        }
+
+        public String getCallerPhone() {
+            return callerPhone;
+        }
+
+        public void setCallerPhone(String callerPhone) {
+            this.callerPhone = callerPhone;
+        }
+
+        public String getCallerPhotoUrl() {
+            return callerPhotoUrl;
+        }
+
+        public void setCallerPhotoUrl(String callerPhotoUrl) {
+            this.callerPhotoUrl = callerPhotoUrl;
+        }
+
+        public FakeCall.CallType getCallType() {
+            return callType;
+        }
+
+        public void setCallType(FakeCall.CallType callType) {
+            this.callType = callType;
+        }
+
+        public Integer getAutoAnswerDelaySeconds() {
+            return autoAnswerDelaySeconds;
+        }
+
+        public void setAutoAnswerDelaySeconds(Integer autoAnswerDelaySeconds) {
+            this.autoAnswerDelaySeconds = autoAnswerDelaySeconds;
+        }
+
+        public Integer getCallDurationSeconds() {
+            return callDurationSeconds;
+        }
+
+        public void setCallDurationSeconds(Integer callDurationSeconds) {
+            this.callDurationSeconds = callDurationSeconds;
+        }
+
+        public FakeCallLog.TriggerMethod getTriggerMethod() {
+            return triggerMethod;
+        }
+
+        public void setTriggerMethod(FakeCallLog.TriggerMethod triggerMethod) {
+            this.triggerMethod = triggerMethod;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(Double latitude) {
+            this.latitude = latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(Double longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getLocationAddress() {
+            return locationAddress;
+        }
+
+        public void setLocationAddress(String locationAddress) {
+            this.locationAddress = locationAddress;
+        }
+
+        public Integer getBatteryLevel() {
+            return batteryLevel;
+        }
+
+        public void setBatteryLevel(Integer batteryLevel) {
+            this.batteryLevel = batteryLevel;
         }
     }
 
@@ -104,6 +288,102 @@ public class FakeCallDTO {
             this.message = message;
             this.instruction = "SHOW_INCOMING_CALL";
         }
+
+        public Long getCallLogId() {
+            return callLogId;
+        }
+
+        public void setCallLogId(Long callLogId) {
+            this.callLogId = callLogId;
+        }
+
+        public Long getPresetId() {
+            return presetId;
+        }
+
+        public void setPresetId(Long presetId) {
+            this.presetId = presetId;
+        }
+
+        public String getCallerName() {
+            return callerName;
+        }
+
+        public void setCallerName(String callerName) {
+            this.callerName = callerName;
+        }
+
+        public String getCallerPhone() {
+            return callerPhone;
+        }
+
+        public void setCallerPhone(String callerPhone) {
+            this.callerPhone = callerPhone;
+        }
+
+        public String getCallerPhotoUrl() {
+            return callerPhotoUrl;
+        }
+
+        public void setCallerPhotoUrl(String callerPhotoUrl) {
+            this.callerPhotoUrl = callerPhotoUrl;
+        }
+
+        public Integer getAutoAnswerDelaySeconds() {
+            return autoAnswerDelaySeconds;
+        }
+
+        public void setAutoAnswerDelaySeconds(Integer autoAnswerDelaySeconds) {
+            this.autoAnswerDelaySeconds = autoAnswerDelaySeconds;
+        }
+
+        public FakeCall.CallType getCallType() {
+            return callType;
+        }
+
+        public void setCallType(FakeCall.CallType callType) {
+            this.callType = callType;
+        }
+
+        public Integer getCallDurationSeconds() {
+            return callDurationSeconds;
+        }
+
+        public void setCallDurationSeconds(Integer callDurationSeconds) {
+            this.callDurationSeconds = callDurationSeconds;
+        }
+
+        public String getRingtoneName() {
+            return ringtoneName;
+        }
+
+        public void setRingtoneName(String ringtoneName) {
+            this.ringtoneName = ringtoneName;
+        }
+
+        public Boolean getVibrateEnabled() {
+            return vibrateEnabled;
+        }
+
+        public void setVibrateEnabled(Boolean vibrateEnabled) {
+            this.vibrateEnabled = vibrateEnabled;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getInstruction() {
+            return instruction;
+        }
+
+        public void setInstruction(String instruction) {
+            this.instruction = instruction;
+        }
     }
 
     /**
@@ -134,6 +414,62 @@ public class FakeCallDTO {
         private String mostCommonTriggerMethod;
 
         public FakeCallStatsDTO() {}
+
+        public Long getTotalCallsTriggered() {
+            return totalCallsTriggered;
+        }
+
+        public void setTotalCallsTriggered(Long totalCallsTriggered) {
+            this.totalCallsTriggered = totalCallsTriggered;
+        }
+
+        public Long getCallsThisMonth() {
+            return callsThisMonth;
+        }
+
+        public void setCallsThisMonth(Long callsThisMonth) {
+            this.callsThisMonth = callsThisMonth;
+        }
+
+        public Long getCallsThisWeek() {
+            return callsThisWeek;
+        }
+
+        public void setCallsThisWeek(Long callsThisWeek) {
+            this.callsThisWeek = callsThisWeek;
+        }
+
+        public String getMostUsedPresetName() {
+            return mostUsedPresetName;
+        }
+
+        public void setMostUsedPresetName(String mostUsedPresetName) {
+            this.mostUsedPresetName = mostUsedPresetName;
+        }
+
+        public Integer getMostUsedPresetId() {
+            return mostUsedPresetId;
+        }
+
+        public void setMostUsedPresetId(Integer mostUsedPresetId) {
+            this.mostUsedPresetId = mostUsedPresetId;
+        }
+
+        public Integer getAverageDurationSeconds() {
+            return averageDurationSeconds;
+        }
+
+        public void setAverageDurationSeconds(Integer averageDurationSeconds) {
+            this.averageDurationSeconds = averageDurationSeconds;
+        }
+
+        public String getMostCommonTriggerMethod() {
+            return mostCommonTriggerMethod;
+        }
+
+        public void setMostCommonTriggerMethod(String mostCommonTriggerMethod) {
+            this.mostCommonTriggerMethod = mostCommonTriggerMethod;
+        }
     }
 
     /**
@@ -158,5 +494,64 @@ public class FakeCallDTO {
             this.size = 50;
             this.color = "#000000";
         }
+
+        public Boolean getEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public Integer getxPosition() {
+            return xPosition;
+        }
+
+        public void setxPosition(Integer xPosition) {
+            this.xPosition = xPosition;
+        }
+
+        public Integer getyPosition() {
+            return yPosition;
+        }
+
+        public void setyPosition(Integer yPosition) {
+            this.yPosition = yPosition;
+        }
+
+        public Integer getOpacity() {
+            return opacity;
+        }
+
+        public void setOpacity(Integer opacity) {
+            this.opacity = opacity;
+        }
+
+        public Integer getSize() {
+            return size;
+        }
+
+        public void setSize(Integer size) {
+            this.size = size;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public Long getDefaultPresetId() {
+            return defaultPresetId;
+        }
+
+        public void setDefaultPresetId(Long defaultPresetId) {
+            this.defaultPresetId = defaultPresetId;
+        }
     }
+
+
+
 }

@@ -106,4 +106,140 @@ public class FakeCallLog {
                     this.callStartedAt, this.callEndedAt).getSeconds();
         }
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public FakeCall getFakeCall() {
+        return fakeCall;
+    }
+
+    public void setFakeCall(FakeCall fakeCall) {
+        this.fakeCall = fakeCall;
+    }
+
+    public String getCallerName() {
+        return callerName;
+    }
+
+    public void setCallerName(String callerName) {
+        this.callerName = callerName;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public TriggerMethod getTriggerMethod() {
+        return triggerMethod;
+    }
+
+    public void setTriggerMethod(TriggerMethod triggerMethod) {
+        this.triggerMethod = triggerMethod;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public LocalDateTime getCallStartedAt() {
+        return callStartedAt;
+    }
+
+    public void setCallStartedAt(LocalDateTime callStartedAt) {
+        this.callStartedAt = callStartedAt;
+    }
+
+    public LocalDateTime getCallEndedAt() {
+        return callEndedAt;
+    }
+
+    public void setCallEndedAt(LocalDateTime callEndedAt) {
+        this.callEndedAt = callEndedAt;
+    }
+
+    public Integer getDurationSeconds() {
+        return durationSeconds;
+    }
+
+    public void setDurationSeconds(Integer durationSeconds) {
+        this.durationSeconds = durationSeconds;
+    }
+
+    public Boolean getWasAnswered() {
+        return wasAnswered;
+    }
+
+    public void setWasAnswered(Boolean wasAnswered) {
+        this.wasAnswered = wasAnswered;
+    }
+
+    public Boolean getWasDeclined() {
+        return wasDeclined;
+    }
+
+    public void setWasDeclined(Boolean wasDeclined) {
+        this.wasDeclined = wasDeclined;
+    }
+
+    public Boolean getAutoEnded() {
+        return autoEnded;
+    }
+
+    public void setAutoEnded(Boolean autoEnded) {
+        this.autoEnded = autoEnded;
+    }
+
+    public Integer getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(Integer batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

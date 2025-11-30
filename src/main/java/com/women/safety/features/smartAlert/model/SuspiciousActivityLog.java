@@ -84,4 +84,108 @@ public class SuspiciousActivityLog {
         this.intensityLevel = intensityLevel;
         this.timestamp = LocalDateTime.now();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AuthUser getUser() {
+        return user;
+    }
+
+    public void setUser(AuthUser user) {
+        this.user = user;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public Double getIntensityLevel() {
+        return intensityLevel;
+    }
+
+    public void setIntensityLevel(Double intensityLevel) {
+        this.intensityLevel = intensityLevel;
+    }
+
+    public Double getConfidenceScore() {
+        return confidenceScore;
+    }
+
+    public void setConfidenceScore(Double confidenceScore) {
+        this.confidenceScore = confidenceScore;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDeviceMotionData() {
+        return deviceMotionData;
+    }
+
+    public void setDeviceMotionData(String deviceMotionData) {
+        this.deviceMotionData = deviceMotionData;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Boolean getAlertTriggered() {
+        return alertTriggered;
+    }
+
+    public void setAlertTriggered(Boolean alertTriggered) {
+        this.alertTriggered = alertTriggered;
+    }
+
+    public Boolean getFalsePositive() {
+        return falsePositive;
+    }
+
+    public void setFalsePositive(Boolean falsePositive) {
+        this.falsePositive = falsePositive;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
