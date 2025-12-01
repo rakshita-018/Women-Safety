@@ -80,7 +80,7 @@ public class EmergencyMediaService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Check if user has emergency contacts
-        List<EmergencyContact> contacts = contactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(user);
+        List<EmergencyContact> contacts = contactRepository.findByUserOrderByCreatedAtAsc(user);
         if (contacts.isEmpty()) {
             throw new IllegalArgumentException("No emergency contacts found. Please add contacts first.");
         }
@@ -375,7 +375,7 @@ public class EmergencyMediaService {
      */
     @Async
     protected void sendFollowUpSMS(EmergencyAlert alert, long audioCount, long photoCount, long videoCount) {
-        List<EmergencyContact> contacts = contactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(alert.getUser());
+        List<EmergencyContact> contacts = contactRepository.findByUserOrderByCreatedAtAsc(alert.getUser());
 
         String mediaViewUrl = baseUrl + "/api/emergency/media/view-all/" + alert.getId();
 

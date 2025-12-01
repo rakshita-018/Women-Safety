@@ -56,7 +56,7 @@ public class AuthService {
             authUserRepository.save(user.get());
 
             String subject = "Email Verification";
-            String body = String.format("Only one step to take full advantage of .\n\n"
+            String body = String.format("Only one step to take full advantage of Women Safety App .\n\n"
                             + "Enter this code to verify your email: " + "%s\n\n" + "The code will expire in " + "%s"
                             + " minutes.",
                     emailVerificationToken, durationInMinutes);
@@ -102,7 +102,7 @@ public class AuthService {
         authUserRepository.save(user);
 
         String subject = "Email Verification";
-        String body = String.format("Only one step to take full advantage of NetBri.\n\n"
+        String body = String.format("Only one step to take full advantage of Women Safety App\n\n"
                         + "Enter this code to verify your email: " + "%s\n\n" + "The code will expire in " + "%s"
                         + " minutes.",
                 emailVerificationToken, durationInMinutes);

@@ -115,17 +115,6 @@ public class AuthUser {
         return emergencyContacts != null && !emergencyContacts.isEmpty();
     }
 
-    // Helper method to get primary emergency contact
-    public EmergencyContact getPrimaryEmergencyContact() {
-        if (emergencyContacts != null) {
-            return emergencyContacts.stream()
-                    .filter(contact -> Boolean.TRUE.equals(contact.getIsPrimary()))
-                    .findFirst()
-                    .orElse(null);
-        }
-        return null;
-    }
-
     // Helper method to get active emergency alerts count
     public long getActiveEmergencyAlertsCount() {
         if (emergencyAlerts != null) {

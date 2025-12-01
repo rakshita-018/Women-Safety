@@ -58,20 +58,12 @@ public class EmergencyService {
             throw new IllegalArgumentException("This phone number is already added as an emergency contact");
         }
 
-        // If setting as primary, remove primary flag from other contacts
-        if (Boolean.TRUE.equals(contactDTO.getIsPrimary())) {
-            List<EmergencyContact> primaryContacts = emergencyContactRepository.findByUserAndIsPrimaryTrue(user);
-            primaryContacts.forEach(contact -> contact.setIsPrimary(false));
-            emergencyContactRepository.saveAll(primaryContacts);
-        }
-
         EmergencyContact contact = new EmergencyContact(
                 user,
                 contactDTO.getContactName(),
                 contactDTO.getPhoneNumber(),
                 contactDTO.getRelationship()
         );
-        contact.setIsPrimary(contactDTO.getIsPrimary());
 
         return emergencyContactRepository.save(contact);
     }
@@ -80,7 +72,7 @@ public class EmergencyService {
         AuthUser user = authUserRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        return emergencyContactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(user);
+        return emergencyContactRepository.findByUserOrderByCreatedAtAsc(user);
     }
 
     @Transactional
@@ -102,17 +94,9 @@ public class EmergencyService {
             throw new IllegalArgumentException("This phone number is already added as an emergency contact");
         }
 
-        // If setting as primary, remove primary flag from other contacts
-        if (Boolean.TRUE.equals(contactDTO.getIsPrimary()) && !Boolean.TRUE.equals(contact.getIsPrimary())) {
-            List<EmergencyContact> primaryContacts = emergencyContactRepository.findByUserAndIsPrimaryTrue(user);
-            primaryContacts.forEach(c -> c.setIsPrimary(false));
-            emergencyContactRepository.saveAll(primaryContacts);
-        }
-
         contact.setContactName(contactDTO.getContactName());
         contact.setPhoneNumber(contactDTO.getPhoneNumber());
         contact.setRelationship(contactDTO.getRelationship());
-        contact.setIsPrimary(contactDTO.getIsPrimary());
 
         return emergencyContactRepository.save(contact);
     }
@@ -140,7 +124,7 @@ public class EmergencyService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Get user's emergency contacts
-        List<EmergencyContact> emergencyContacts = emergencyContactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(user);
+        List<EmergencyContact> emergencyContacts = emergencyContactRepository.findByUserOrderByCreatedAtAsc(user);
 
         if (emergencyContacts.isEmpty()) {
             throw new IllegalArgumentException("No emergency contacts found. Please add emergency contacts first.");

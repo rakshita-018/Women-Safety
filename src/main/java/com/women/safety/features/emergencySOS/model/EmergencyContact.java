@@ -32,7 +32,6 @@ public class EmergencyContact {
     private AuthUser user;
 
     private String relationship;
-    private Boolean isPrimary = false;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
@@ -102,14 +101,6 @@ public class EmergencyContact {
 
     public void setRelationship(String relationship) {
         this.relationship = relationship;
-    }
-
-    public Boolean getPrimary() {
-        return isPrimary;
-    }
-
-    public void setPrimary(Boolean primary) {
-        isPrimary = primary;
     }
 
     public LocalDateTime getUpdatedAt() {

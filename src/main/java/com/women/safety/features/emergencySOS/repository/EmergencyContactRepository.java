@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface EmergencyContactRepository extends JpaRepository<EmergencyContact, Long> {
 
-    List<EmergencyContact> findByUserOrderByIsPrimaryDescCreatedAtAsc(AuthUser user);
+    List<EmergencyContact> findByUserOrderByCreatedAtAsc(AuthUser user);
 
-    List<EmergencyContact> findByUserAndIsPrimaryTrue(AuthUser user);
+//    List<EmergencyContact> findByUserAndIsPrimaryTrue(AuthUser user);
 
     @Query("SELECT COUNT(ec) FROM EmergencyContact ec WHERE ec.user = :user")
     long countByUser(@Param("user") AuthUser user);

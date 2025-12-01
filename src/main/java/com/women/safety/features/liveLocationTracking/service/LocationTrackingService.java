@@ -289,7 +289,7 @@ public class LocationTrackingService {
 
     @Async
     protected void notifyContactsAboutSharingStart(ScheduledLocationSharing sharing) {
-        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(sharing.getUser());
+        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByCreatedAtAsc(sharing.getUser());
 
         String message = String.format("📍 LOCATION SHARING STARTED\n\n" +
                         "%s has started sharing their location with you.\n" +
@@ -309,7 +309,7 @@ public class LocationTrackingService {
 
     @Async
     protected void notifyContactsAboutArrival(AuthUser user, ScheduledLocationSharing sharing) {
-        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(user);
+        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByCreatedAtAsc(user);
 
         String message = String.format("✅ SAFE ARRIVAL CONFIRMED\n\n" +
                         "%s has arrived safely at their destination.\n" +
@@ -326,7 +326,7 @@ public class LocationTrackingService {
 
     @Async
     protected void notifyContactsAboutDelay(ScheduledLocationSharing sharing) {
-        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByIsPrimaryDescCreatedAtAsc(sharing.getUser());
+        List<EmergencyContact> contacts = emergencyContactRepository.findByUserOrderByCreatedAtAsc(sharing.getUser());
 
         String message = String.format("⚠️ DELAYED ARRIVAL ALERT\n\n" +
                         "%s has not arrived at their expected destination.\n" +
