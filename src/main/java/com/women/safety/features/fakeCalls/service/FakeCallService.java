@@ -33,6 +33,7 @@ public class FakeCallService {
     private final AuthUserRepository userRepository;
     private final OpenStreetMapService openStreetMapService;
 
+
     public FakeCallService(FakeCallRepository fakeCallRepository,
                            FakeCallLogRepository callLogRepository,
                            AuthUserRepository userRepository,
@@ -144,7 +145,10 @@ public class FakeCallService {
             throw new IllegalArgumentException("Unauthorized");
         }
 
+        callLogRepository.deleteByFakeCall(fakeCall);
         fakeCallRepository.delete(fakeCall);
+
+
 
         logger.info("Fake call preset deleted: {} for user: {}", presetId, userEmail);
     }

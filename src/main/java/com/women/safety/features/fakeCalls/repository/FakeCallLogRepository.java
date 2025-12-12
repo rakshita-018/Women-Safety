@@ -1,6 +1,7 @@
 package com.women.safety.features.fakeCalls.repository;
 
 import com.women.safety.features.authentication.model.AuthUser;
+import com.women.safety.features.fakeCalls.model.FakeCall;
 import com.women.safety.features.fakeCalls.model.FakeCallLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,8 @@ public interface FakeCallLogRepository extends JpaRepository<FakeCallLog, Long> 
 
     @Query("SELECT COUNT(fcl) FROM FakeCallLog fcl WHERE fcl.user = :user AND fcl.callStartedAt >= :fromDate")
     long countRecentCalls(@Param("user") AuthUser user, @Param("fromDate") LocalDateTime fromDate);
+
+    void deleteByFakeCall(FakeCall fakeCall);
 
     @Query("SELECT fcl FROM FakeCallLog fcl WHERE fcl.user = :user AND fcl.triggerMethod = :method ORDER BY fcl.callStartedAt DESC")
     List<FakeCallLog> findByTriggerMethod(@Param("user") AuthUser user, @Param("method") FakeCallLog.TriggerMethod method);
