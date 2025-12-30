@@ -5,6 +5,8 @@ import com.women.safety.features.authentication.security.CustomUserDetails;
 import com.women.safety.features.emergencyMediaFiles.dto.EnhancedSOSRequestDTO;
 import com.women.safety.features.emergencyMediaFiles.dto.MediaSummaryDTO;
 import com.women.safety.features.emergencyMediaFiles.dto.MediaUploadResponseDTO;
+import com.women.safety.features.emergencyMediaFiles.model.EmergencyMedia;
+import com.women.safety.features.emergencyMediaFiles.repository.EmergencyMediaRepository;
 import com.women.safety.features.emergencyMediaFiles.service.EmergencyMediaService;
 import com.women.safety.features.emergencySOS.dto.EmergencyAlertResponseDTO;
 import jakarta.validation.Valid;
@@ -24,9 +26,11 @@ import java.util.Map;
 public class EmergencyMediaController {
 
     private final EmergencyMediaService mediaService;
+    private final EmergencyMediaRepository mediaRepository;
 
-    public EmergencyMediaController(EmergencyMediaService mediaService) {
+    public EmergencyMediaController(EmergencyMediaService mediaService, EmergencyMediaRepository mediaRepository) {
         this.mediaService = mediaService;
+        this.mediaRepository = mediaRepository;
     }
 
     // ==================== Enhanced SOS Endpoints ====================
@@ -130,17 +134,31 @@ public class EmergencyMediaController {
     /**
      * View/Download specific media file
      * GET /api/emergency/media/view/{mediaId}
+     *
+     * Works for both LOCAL and R2 storage modes
      */
     @GetMapping("/media/view/{mediaId}")
-    public ResponseEntity<Resource> viewMedia(
-            @PathVariable Long mediaId) {
+    public ResponseEntity<Resource> viewMedia(@PathVariable Long mediaId) {
+
+        EmergencyMedia media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new IllegalArgumentException("Media not found"));
 
         byte[] fileBytes = mediaService.getMediaFile(mediaId);
         ByteArrayResource resource = new ByteArrayResource(fileBytes);
 
+        // Determine content type
+        String contentType = media.getMimeType() != null ?
+                media.getMimeType() : "application/octet-stream";
+
+        // Set proper filename for download
+        String fileName = media.getFileName() != null ?
+                media.getFileName() : "evidence_file";
+
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"evidence.file\"")
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + fileName + "\"")
+                .contentLength(fileBytes.length)
                 .body(resource);
     }
 

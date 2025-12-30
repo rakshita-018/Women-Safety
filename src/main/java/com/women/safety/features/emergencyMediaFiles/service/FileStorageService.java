@@ -1,6 +1,8 @@
 package com.women.safety.features.emergencyMediaFiles.service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,38 +18,49 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
- * File Storage Service - Local Filesystem
- * Stores emergency media files (audio, photos, videos)
+ * File Storage Service - Supports both LOCAL and R2 (Cloudflare) storage
+ *
+ * Switch between modes using storage.mode property:
+ * - LOCAL: Store files on server filesystem (development)
+ * - R2: Store files on Cloudflare R2 (production)
  */
 @Service
 public class FileStorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
 
+    @Value("${storage.mode:LOCAL}")
+    private String storageMode;
+
     @Value("${file.upload.dir:uploads/emergency-media}")
     private String uploadDir;
 
-    @Value("${file.max.size:10485760}") // 10MB default
+    @Value("${file.max.size:10485760}")
     private long maxFileSize;
 
     private static final String AUDIO_DIR = "audio";
     private static final String PHOTO_DIR = "photos";
     private static final String VIDEO_DIR = "videos";
-    private static final String THUMBNAIL_DIR = "thumbnails";
+
+    @Autowired(required = false)
+    private CloudflareR2StorageService r2StorageService;
 
     /**
-     * Initialize storage directories
+     * Initialize storage directories (LOCAL mode only)
      */
     public void init() {
-        try {
-            Files.createDirectories(Paths.get(uploadDir, AUDIO_DIR));
-            Files.createDirectories(Paths.get(uploadDir, PHOTO_DIR));
-            Files.createDirectories(Paths.get(uploadDir, VIDEO_DIR));
-            Files.createDirectories(Paths.get(uploadDir, THUMBNAIL_DIR));
-            logger.info("File storage directories initialized at: {}", uploadDir);
-        } catch (IOException e) {
-            logger.error("Failed to create storage directories: {}", e.getMessage());
-            throw new RuntimeException("Could not create upload directories!", e);
+        if ("LOCAL".equalsIgnoreCase(storageMode)) {
+            try {
+                Files.createDirectories(Paths.get(uploadDir, AUDIO_DIR));
+                Files.createDirectories(Paths.get(uploadDir, PHOTO_DIR));
+                Files.createDirectories(Paths.get(uploadDir, VIDEO_DIR));
+                logger.info("LOCAL file storage initialized at: {}", uploadDir);
+            } catch (IOException e) {
+                logger.error("Failed to create storage directories: {}", e.getMessage());
+                throw new RuntimeException("Could not create upload directories!", e);
+            }
+        } else if ("R2".equalsIgnoreCase(storageMode)) {
+            logger.info("R2 cloud storage mode enabled (Cloudflare R2)");
         }
     }
 
@@ -55,34 +68,71 @@ public class FileStorageService {
      * Store audio file
      */
     public StorageResult storeAudio(MultipartFile file, Long alertId, Long userId) {
-        return storeFile(file, AUDIO_DIR, alertId, userId, "audio");
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.storeAudio(file, alertId, userId);
+        }
+        return storeFileLocally(file, AUDIO_DIR, alertId, userId, "audio");
     }
 
     /**
      * Store photo file
      */
     public StorageResult storePhoto(MultipartFile file, Long alertId, Long userId) {
-        return storeFile(file, PHOTO_DIR, alertId, userId, "photo");
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.storePhoto(file, alertId, userId);
+        }
+        return storeFileLocally(file, PHOTO_DIR, alertId, userId, "photo");
     }
 
     /**
      * Store video file
      */
     public StorageResult storeVideo(MultipartFile file, Long alertId, Long userId) {
-        return storeFile(file, VIDEO_DIR, alertId, userId, "video");
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.storeVideo(file, alertId, userId);
+        }
+        return storeFileLocally(file, VIDEO_DIR, alertId, userId, "video");
     }
 
     /**
-     * Generic file storage method
+     * Load file as byte array
      */
-    private StorageResult storeFile(MultipartFile file, String subDir, Long alertId, Long userId, String type) {
+    public byte[] loadFile(String path) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.loadFile(path);
+        }
+        return loadFileLocally(path);
+    }
+
+    /**
+     * Delete file
+     */
+    public boolean deleteFile(String path) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.deleteFile(path);
+        }
+        return deleteFileLocally(path);
+    }
+
+    /**
+     * Check if file exists
+     */
+    public boolean fileExists(String path) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.fileExists(path);
+        }
+        Path filePath = Paths.get(uploadDir, path);
+        return Files.exists(filePath);
+    }
+
+    // ==================== LOCAL STORAGE METHODS ====================
+
+    private StorageResult storeFileLocally(MultipartFile file, String subDir, Long alertId, Long userId, String type) {
         try {
-            // Validate file
             if (file.isEmpty()) {
                 throw new IllegalArgumentException("Cannot store empty file");
             }
 
-            // Check file size
             if (file.getSize() > maxFileSize) {
                 throw new IllegalArgumentException(String.format(
                         "File size exceeds maximum allowed size of %d MB",
@@ -90,7 +140,6 @@ public class FileStorageService {
                 ));
             }
 
-            // Generate unique filename
             String originalFilename = file.getOriginalFilename();
             String fileExtension = getFileExtension(originalFilename);
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
@@ -101,18 +150,12 @@ public class FileStorageService {
                     alertId, userId, type, timestamp, uniqueId, fileExtension
             );
 
-            // Create full path
             Path targetLocation = Paths.get(uploadDir, subDir, newFileName);
-
-            // Ensure directory exists
             Files.createDirectories(targetLocation.getParent());
-
-            // Copy file
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            logger.info("{} file stored successfully: {}", type, newFileName);
+            logger.info("{} file stored locally: {}", type, newFileName);
 
-            // Return result
             StorageResult result = new StorageResult();
             result.setSuccess(true);
             result.setFileName(newFileName);
@@ -126,8 +169,7 @@ public class FileStorageService {
             return result;
 
         } catch (IOException e) {
-            logger.error("Failed to store {} file: {}", type, e.getMessage());
-
+            logger.error("Failed to store {} file locally: {}", type, e.getMessage());
             StorageResult result = new StorageResult();
             result.setSuccess(false);
             result.setErrorMessage("Failed to store file: " + e.getMessage());
@@ -135,63 +177,34 @@ public class FileStorageService {
         }
     }
 
-    /**
-     * Load file as byte array
-     */
-    public byte[] loadFile(String relativePath) {
+    private byte[] loadFileLocally(String relativePath) {
         try {
             Path filePath = Paths.get(uploadDir, relativePath);
             return Files.readAllBytes(filePath);
         } catch (IOException e) {
-            logger.error("Failed to load file: {}", e.getMessage());
+            logger.error("Failed to load file locally: {}", e.getMessage());
             throw new RuntimeException("Could not read file: " + relativePath, e);
         }
     }
 
-    /**
-     * Check if file exists
-     */
-    public boolean fileExists(String relativePath) {
-        Path filePath = Paths.get(uploadDir, relativePath);
-        return Files.exists(filePath);
-    }
-
-    /**
-     * Delete file
-     */
-    public boolean deleteFile(String relativePath) {
+    private boolean deleteFileLocally(String relativePath) {
         try {
             Path filePath = Paths.get(uploadDir, relativePath);
             Files.deleteIfExists(filePath);
-            logger.info("File deleted: {}", relativePath);
+            logger.info("File deleted locally: {}", relativePath);
             return true;
         } catch (IOException e) {
-            logger.error("Failed to delete file: {}", e.getMessage());
+            logger.error("Failed to delete file locally: {}", e.getMessage());
             return false;
         }
     }
 
-    /**
-     * Get file extension
-     */
-    private String getFileExtension(String filename) {
-        if (filename == null || filename.lastIndexOf(".") == -1) {
-            return "";
-        }
-        return filename.substring(filename.lastIndexOf("."));
-    }
+    // ==================== VALIDATION METHODS ====================
 
-    /**
-     * Get upload directory path
-     */
-    public String getUploadDir() {
-        return uploadDir;
-    }
-
-    /**
-     * Validate audio file
-     */
     public boolean isValidAudioFile(MultipartFile file) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.isValidAudioFile(file);
+        }
         String contentType = file.getContentType();
         return contentType != null && (
                 contentType.equals("audio/aac") ||
@@ -202,10 +215,10 @@ public class FileStorageService {
         );
     }
 
-    /**
-     * Validate photo file
-     */
     public boolean isValidPhotoFile(MultipartFile file) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.isValidPhotoFile(file);
+        }
         String contentType = file.getContentType();
         return contentType != null && (
                 contentType.equals("image/jpeg") ||
@@ -215,10 +228,10 @@ public class FileStorageService {
         );
     }
 
-    /**
-     * Validate video file
-     */
     public boolean isValidVideoFile(MultipartFile file) {
+        if ("R2".equalsIgnoreCase(storageMode)) {
+            return r2StorageService.isValidVideoFile(file);
+        }
         String contentType = file.getContentType();
         return contentType != null && (
                 contentType.equals("video/mp4") ||
@@ -227,9 +240,21 @@ public class FileStorageService {
         );
     }
 
-    /**
-     * Storage result class
-     */
+    // ==================== HELPER METHODS ====================
+
+    private String getFileExtension(String filename) {
+        if (filename == null || filename.lastIndexOf(".") == -1) {
+            return "";
+        }
+        return filename.substring(filename.lastIndexOf("."));
+    }
+
+    public String getUploadDir() {
+        return uploadDir;
+    }
+
+    // ==================== STORAGE RESULT CLASS ====================
+
     public static class StorageResult {
         private boolean success;
         private String fileName;
@@ -241,7 +266,6 @@ public class FileStorageService {
         private String originalFileName;
         private String errorMessage;
 
-        // Getters and setters
         public boolean isSuccess() { return success; }
         public void setSuccess(boolean success) { this.success = success; }
 

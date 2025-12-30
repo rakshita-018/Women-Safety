@@ -14,11 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Fake Call Controller
- *
- * REST API for fake call simulation feature
- */
 @RestController
 @RequestMapping("/api/fake-call")
 public class FakeCallController {
@@ -31,10 +26,7 @@ public class FakeCallController {
 
     // ==================== Preset Management ====================
 
-    /**
-     * Create a new fake call preset
-     * POST /api/fake-call/presets
-     */
+
     @PostMapping("/presets")
     public ResponseEntity<Map<String, Object>> createPreset(
             @Valid @RequestBody FakeCallDTO.FakeCallPresetDTO presetDTO,
