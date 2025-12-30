@@ -377,26 +377,50 @@ public class EmergencyMediaService {
     protected void sendFollowUpSMS(EmergencyAlert alert, long audioCount, long photoCount, long videoCount) {
         List<EmergencyContact> contacts = contactRepository.findByUserOrderByCreatedAtAsc(alert.getUser());
 
-        String mediaViewUrl = baseUrl + "/api/emergency/media/view-all/" + alert.getId();
+        // Get all media for this alert
+        List<EmergencyMedia> allMedia = mediaRepository.findByAlertOrderByUploadedAtDesc(alert);
 
         StringBuilder message = new StringBuilder();
-        message.append("EMERGENCY EVIDENCE RECEIVED\n\n");
+        message.append("🚨 EMERGENCY EVIDENCE RECEIVED\n\n");
         message.append("From: ").append(alert.getUser().getFullName()).append("\n");
         message.append("Alert ID: ").append(alert.getId()).append("\n\n");
         message.append("Evidence uploaded:\n");
 
         if (audioCount > 0) {
-            message.append(audioCount).append(" audio recording(s)\n");
+            message.append("🎤 ").append(audioCount).append(" audio recording(s)\n");
         }
         if (photoCount > 0) {
-            message.append(photoCount).append(" photo(s)\n");
+            message.append("📷 ").append(photoCount).append(" photo(s)\n");
         }
         if (videoCount > 0) {
-            message.append(videoCount).append(" video(s)\n");
+            message.append("🎥 ").append(videoCount).append(" video(s)\n");
         }
 
-        message.append("\nView evidence: ").append(mediaViewUrl);
-        message.append("\n\nThis evidence may be critical!");
+        message.append("\n📁 VIEW ALL EVIDENCE:\n");
+
+        // 🔥 FIX: Add PUBLIC URLs for each media file
+        int count = 1;
+        for (EmergencyMedia media : allMedia) {
+            if (count > 5) { // Limit to first 5 files to keep SMS short
+                message.append("... and ").append(allMedia.size() - 5).append(" more files\n");
+                break;
+            }
+
+            // Get the PUBLIC URL from database (already stored correctly)
+            String publicUrl = media.getFilePath(); // This is now the public URL
+
+            String emoji = switch (media.getMediaType()) {
+                case AUDIO -> "🎤";
+                case PHOTO -> "📷";
+                case VIDEO -> "🎥";
+                default -> "📄";
+            };
+
+            message.append(emoji).append(" ").append(count).append(". ").append(publicUrl).append("\n");
+            count++;
+        }
+
+        message.append("\n⚠️ CRITICAL EVIDENCE - Download immediately!");
 
         String smsText = message.toString();
 
@@ -409,7 +433,7 @@ public class EmergencyMediaService {
             }
         }
 
-        logger.info("Follow-up SMS sent with media evidence notification");
+        logger.info("✅ Follow-up SMS sent with {} media URLs to {} contacts", allMedia.size(), contacts.size());
     }
 
     // ==================== Media Retrieval ====================

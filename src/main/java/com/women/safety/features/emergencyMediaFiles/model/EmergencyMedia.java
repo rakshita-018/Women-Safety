@@ -106,7 +106,19 @@ public class EmergencyMedia {
 
     // Helper method to get file URL for sharing
     public String getFileUrl(String baseUrl) {
+        // If filePath is already a full public URL (from R2), return it directly
+        if (this.filePath != null && (this.filePath.startsWith("http://") || this.filePath.startsWith("https://"))) {
+            return this.filePath;
+        }
+
+        // Fallback: construct URL using base URL (for local storage or old data)
         return baseUrl + "/api/emergency/media/view/" + this.id;
+    }
+    public String getPublicUrl() {
+        if (this.filePath != null && (this.filePath.startsWith("http://") || this.filePath.startsWith("https://"))) {
+            return this.filePath;
+        }
+        return null; // No public URL available
     }
 
     // Helper method to check if upload is complete

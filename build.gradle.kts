@@ -54,6 +54,10 @@ dependencies {
 	//java mail
 	implementation("org.springframework.boot:spring-boot-starter-mail:3.3.4")
 
+	//cloud storage
+	implementation("software.amazon.awssdk:s3:2.20.26")
+	implementation("software.amazon.awssdk:auth:2.20.26")
+	implementation("commons-io:commons-io:2.11.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")

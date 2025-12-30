@@ -16,10 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
- * Cloudflare R2 Storage Service
- *
- * Handles file upload/download/delete operations with Cloudflare R2
- * Uses AWS S3 SDK (R2 is S3-compatible)
+ * Cloudflare R2 Storage Service - FIXED VERSION
+ * Now stores public URLs in database and generates correct media links
  */
 @Service
 public class CloudflareR2StorageService {
@@ -31,8 +29,8 @@ public class CloudflareR2StorageService {
     @Value("${cloudflare.r2.bucket-name}")
     private String bucketName;
 
-    @Value("${cloudflare.r2.public-url:}")
-    private String publicUrl;
+    @Value("${cloudflare.r2.public-url}")
+    private String publicUrl; // e.g., https://pub-0bf92da275904aee9de4bf37768c544b.r2.dev
 
     @Value("${file.max.size:10485760}")
     private long maxFileSize;
@@ -67,7 +65,7 @@ public class CloudflareR2StorageService {
     }
 
     /**
-     * Generic file storage method for R2
+     * Generic file storage method for R2 - FIXED to return public URL
      */
     private FileStorageService.StorageResult storeFile(
             MultipartFile file, String subDir, Long alertId, Long userId, String type) {
@@ -119,17 +117,22 @@ public class CloudflareR2StorageService {
                 s3Client.putObject(putRequest, RequestBody.fromInputStream(inputStream, file.getSize()));
             }
 
-            logger.info("File uploaded to R2: {} ({})", s3Key, formatFileSize(file.getSize()));
+            logger.info("✅ File uploaded to R2: {} ({})", s3Key, formatFileSize(file.getSize()));
 
-            // Build result
+            // 🔥 FIX: Build PUBLIC URL for database storage
+            String publicFileUrl = buildPublicUrl(s3Key);
+
+            // Build result with PUBLIC URL
             result.setSuccess(true);
             result.setFileName(fileName);
-            result.setFilePath(s3Key); // Store S3 key as path
-            result.setRelativePath(s3Key);
+            result.setFilePath(publicFileUrl); // Store PUBLIC URL, not S3 key
+            result.setRelativePath(s3Key); // Keep S3 key for internal use
             result.setFileSize(file.getSize());
             result.setFileExtension(fileExtension);
             result.setMimeType(contentType);
             result.setOriginalFileName(originalFilename);
+
+            logger.info("📍 Public URL generated: {}", publicFileUrl);
 
             return result;
 
@@ -147,10 +150,30 @@ public class CloudflareR2StorageService {
     }
 
     /**
-     * Load file from R2 as byte array
+     * 🔥 NEW: Build public URL from S3 key
      */
-    public byte[] loadFile(String s3Key) {
+    private String buildPublicUrl(String s3Key) {
+        if (publicUrl == null || publicUrl.isEmpty()) {
+            logger.warn("⚠️ Public URL not configured! Using S3 key as fallback.");
+            return s3Key;
+        }
+
+        // Ensure no double slashes
+        String baseUrl = publicUrl.endsWith("/") ? publicUrl.substring(0, publicUrl.length() - 1) : publicUrl;
+        return baseUrl + "/" + s3Key;
+    }
+
+    /**
+     * Load file from R2 as byte array
+     * 🔥 FIXED: Extract S3 key from public URL if needed
+     */
+    public byte[] loadFile(String filePathOrUrl) {
         try {
+            // Extract S3 key from public URL if it's a full URL
+            String s3Key = extractS3KeyFromUrl(filePathOrUrl);
+
+            logger.info("📥 Loading file from R2: {}", s3Key);
+
             GetObjectRequest getRequest = GetObjectRequest.builder()
                     .bucket(bucketName)
                     .key(s3Key)
@@ -158,13 +181,13 @@ public class CloudflareR2StorageService {
 
             byte[] fileBytes = s3Client.getObject(getRequest).readAllBytes();
 
-            logger.info("File retrieved from R2: {} ({})", s3Key, formatFileSize(fileBytes.length));
+            logger.info("✅ File retrieved from R2: {} ({})", s3Key, formatFileSize(fileBytes.length));
 
             return fileBytes;
 
         } catch (IOException e) {
             logger.error("Failed to read file from R2: {}", e.getMessage());
-            throw new RuntimeException("Could not read file: " + s3Key, e);
+            throw new RuntimeException("Could not read file: " + filePathOrUrl, e);
         } catch (S3Exception e) {
             logger.error("R2 error retrieving file: {}", e.awsErrorDetails().errorMessage());
             throw new RuntimeException("Cloud storage error: " + e.awsErrorDetails().errorMessage(), e);
@@ -172,10 +195,38 @@ public class CloudflareR2StorageService {
     }
 
     /**
-     * Delete file from R2
+     * 🔥 NEW: Extract S3 key from public URL or return as-is if already a key
      */
-    public boolean deleteFile(String s3Key) {
+    private String extractS3KeyFromUrl(String filePathOrUrl) {
+        if (filePathOrUrl == null || filePathOrUrl.isEmpty()) {
+            throw new IllegalArgumentException("File path/URL cannot be empty");
+        }
+
+        // If it's a full URL starting with http/https, extract the path
+        if (filePathOrUrl.startsWith("http://") || filePathOrUrl.startsWith("https://")) {
+            try {
+                // Extract everything after the domain
+                int domainEnd = filePathOrUrl.indexOf("/", 8); // Skip "https://"
+                if (domainEnd != -1) {
+                    return filePathOrUrl.substring(domainEnd + 1);
+                }
+            } catch (Exception e) {
+                logger.warn("Failed to extract S3 key from URL, using as-is: {}", filePathOrUrl);
+            }
+        }
+
+        // Already an S3 key (e.g., "audio/file.mp3")
+        return filePathOrUrl;
+    }
+
+    /**
+     * Delete file from R2
+     * 🔥 FIXED: Handle both URLs and S3 keys
+     */
+    public boolean deleteFile(String filePathOrUrl) {
         try {
+            String s3Key = extractS3KeyFromUrl(filePathOrUrl);
+
             DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                     .bucket(bucketName)
                     .key(s3Key)
@@ -183,7 +234,7 @@ public class CloudflareR2StorageService {
 
             s3Client.deleteObject(deleteRequest);
 
-            logger.info("File deleted from R2: {}", s3Key);
+            logger.info("🗑️ File deleted from R2: {}", s3Key);
             return true;
 
         } catch (S3Exception e) {
@@ -194,9 +245,12 @@ public class CloudflareR2StorageService {
 
     /**
      * Check if file exists in R2
+     * 🔥 FIXED: Handle both URLs and S3 keys
      */
-    public boolean fileExists(String s3Key) {
+    public boolean fileExists(String filePathOrUrl) {
         try {
+            String s3Key = extractS3KeyFromUrl(filePathOrUrl);
+
             HeadObjectRequest headRequest = HeadObjectRequest.builder()
                     .bucket(bucketName)
                     .key(s3Key)
@@ -215,17 +269,16 @@ public class CloudflareR2StorageService {
 
     /**
      * Get public URL for file
-     * If publicUrl is configured, use it; otherwise generate presigned URL
+     * 🔥 UPDATED: Now always returns public URL
      */
-    public String getFileUrl(String s3Key) {
-        if (publicUrl != null && !publicUrl.isEmpty()) {
-            // Use public R2 domain (if configured)
-            return publicUrl + "/" + s3Key;
-        } else {
-            // For now, return API endpoint URL
-            // In production, you should configure R2 public domain or use presigned URLs
-            return "/api/emergency/media/view/" + s3Key;
+    public String getFileUrl(String filePathOrUrl) {
+        // If already a full URL, return as-is
+        if (filePathOrUrl != null && (filePathOrUrl.startsWith("http://") || filePathOrUrl.startsWith("https://"))) {
+            return filePathOrUrl;
         }
+
+        // Build public URL from S3 key
+        return buildPublicUrl(filePathOrUrl);
     }
 
     // Helper methods
@@ -247,9 +300,7 @@ public class CloudflareR2StorageService {
         }
     }
 
-    /**
-     * Validate file types (same as local storage)
-     */
+    // Validation methods
     public boolean isValidAudioFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && (
